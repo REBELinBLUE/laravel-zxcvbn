@@ -66,6 +66,13 @@ coverage:
 	@echo "${GREEN}Tests with coverage${RESET}"
 	@phpdbg -qrr vendor/bin/phpunit --coverage-html build/ --coverage-clover coverage.xml
 
+# PHPUnit for Travis
+ifeq "$(TRAVIS_PHP_VERSION)" "7.1.0"
+phpunit-ci: coverage
+else
+phpunit-ci: phpunit
+endif
+
 ## Prints this help
 help:
 	@echo "\nUsage: make ${YELLOW}<target>${RESET}\n\nThe following targets are available:\n";

@@ -28,7 +28,7 @@ script:
   - make lint
   - make phpcs
   # - make phpmd
-  - make coverage
+  - make phpunit-ci
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
