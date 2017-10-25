@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7d7a7ef7dc4f54cce5839d6666233a5",
+    "content-hash": "01aae23302b89224156ae15841d918c2",
     "packages": [
         {
             "name": "bjeavons/zxcvbn-php",
