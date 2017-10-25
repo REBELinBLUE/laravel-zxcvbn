@@ -20,7 +20,7 @@ install:
 script:
   - make lint
   - make phpcs
-  - make phpmd
+  # - make phpmd
   - make coverage
 
 after_success:
