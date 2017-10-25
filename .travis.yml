@@ -1,0 +1,30 @@
+sudo: false
+
+language: php
+
+php:
+  - 7.0
+  - 7.1
+
+cache:
+  directories:
+    - $TRAVIS_BUILD_DIR/vendor
+
+before_install:
+  - phpenv config-rm xdebug.ini
+
+install:
+  - travis_retry composer install --no-interaction --prefer-dist --no-suggest
+
+script:
+  - make lint
+  - make phpcs
+  - make phpmd
+  - make phpstan
+  - make coverage
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email: false

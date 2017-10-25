@@ -1,0 +1,10 @@
+# Composer files
+composer.phar
+vendor/
+
+# Dev files
+build/
+.php_cs.cache
+.php_cs
+coverage.xml
+phpunit.xml
