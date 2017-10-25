@@ -86,6 +86,7 @@ class ZxcvbnValidator
             return $this->$strategy($match, $isOnlyMatch);
         }
 
+        // FIXME: This should not happen
         return $strategy;
     }
 
