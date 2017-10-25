@@ -28,7 +28,7 @@
         "jakub-onderka/php-parallel-lint": "^0.9.2",
         "orchestra/testbench": "~3.4",
         "phpmd/phpmd": "^2.6",
-        "phpunit/phpunit": "^6.0",
+        "phpunit/phpunit": "^5.7",
         "squizlabs/php_codesniffer": "^2.8"
     },
     "autoload": {
@@ -49,10 +49,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "REBELinBLUE\\Zxcvbn\\ServiceProvider"
+                "REBELinBLUE\\Zxcvbn\\ZxcvbnServiceProvider"
             ],
             "aliases": {
-                "Zxcvbn": "REBELinBLUE\\Zxcvbn\\Facade"
+                "Zxcvbn": "REBELinBLUE\\Zxcvbn\\ZxcvbnFacade"
             }
         }
     }

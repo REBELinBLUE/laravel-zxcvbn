@@ -14,5 +14,6 @@ return [
     'very_common'        => 'This is a very common password',
     'top_10'             => 'This is in the top-10 most common passwords',
     'top_100'            => 'This is in the top-100 most common passwords',
+    'digits'             => 'Adding a series of digits does not improve security',
 
 ];

@@ -3,6 +3,7 @@
 namespace REBELinBLUE\Zxcvbn;
 
 use Illuminate\Translation\Translator;
+use InvalidArgumentException;
 use ZxcvbnPhp\Zxcvbn;
 
 /**
@@ -37,8 +38,8 @@ class ZxcvbnValidator
 
         $desiredScore = isset($parameters[0]) ? $parameters[0] : self::DEFAULT_MINIMUM_STRENGTH;
 
-        if ($desiredScore < 1 || $desiredScore > 5) {
-            throw new \InvalidArgumentException('The required password score must be between 1 and 5');
+        if ($desiredScore < 0 || $desiredScore > 4 || !is_numeric($desiredScore)) {
+            throw new InvalidArgumentException('The required password score must be between 0 and 4');
         }
 
         $zxcvbn = new Zxcvbn();
@@ -154,6 +155,6 @@ class ZxcvbnValidator
 
     private function getDigitWarning()
     {
-        return 'Adding a series of digits does not improve security'; // FIXME: Find a test to trigger this
+        return 'digits';
     }
 }

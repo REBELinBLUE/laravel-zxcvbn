@@ -3,9 +3,11 @@
 namespace REBELinBLUE\Zxcvbn\Tests;
 
 use Illuminate\Validation\Factory;
+use InvalidArgumentException;
 use Orchestra\Testbench\TestCase;
 use REBELinBLUE\Zxcvbn\ZxcvbnFacade as Zxcvbn;
 use REBELinBLUE\Zxcvbn\ZxcvbnServiceProvider;
+use ZxcvbnPhp\Zxcvbn as ZxcvbnPhp;
 
 class ZxcvbnTest extends TestCase
 {
@@ -33,12 +35,46 @@ class ZxcvbnTest extends TestCase
         ];
     }
 
+    public function testBinding()
+    {
+        $byName = $this->app->make('zxcvbn');
+        $byClass = $this->app->make(ZxcvbnPhp::class);
+
+        $this->assertInstanceOf(ZxcvbnPhp::class, $byName);
+        $this->assertInstanceOf(ZxcvbnPhp::class, $byClass);
+    }
+
     public function testFacadeCallsCorrectClass()
     {
         $result = Zxcvbn::passwordStrength('testing');
 
         $this->assertArrayHasKey('score', $result);
         $this->assertArrayHasKey('match_sequence', $result);
+    }
+
+    /**
+     * @dataProvider scoreDataProvider
+     */
+    public function testItThrowsAnExceptionWhenConfiguredScoreIsInvalid($score)
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $data = ['password' => 'P@$$w0rd'];
+
+        $validator = $this->factory->make($data, [
+            'password' => 'zxcvbn:' . $score,
+        ]);
+
+        $validator->valid();
+    }
+
+    public function scoreDataProvider()
+    {
+        return [
+            [-1],
+            [5],
+            ['invalid-score'],
+        ];
     }
 
     public function testItFailsOnGuessablePassword()
@@ -87,19 +123,20 @@ class ZxcvbnTest extends TestCase
     public function validationDataProvider()
     {
         return [
-            ['test123456', 'common'],
-            ['poiuytghjkl', 'spatial_with_turns'],
-            ['poiuyt`', 'straight_spatial'],
-            ['98761234', 'sequence'],
-            ['30/09/1983', 'dates'],
-            ['StephenBall', 'names'],
-            ['aaaaaaaaa', 'repeat'],
-            ['password', 'top_10'],
-            ['trustno1', 'top_100'],
-            ['drowssap', 'very_common'],
-            ['P4$$w0rd', 'predictable'],
-            //['crkuw297', 'Adding a series of digits does not improve security'],
-            [date('Y'), 'years']
+            ['test123456', 'common'],               // Common
+            ['poiuytghjkl', 'spatial_with_turns'],  // Simple keyboard pattern
+            ['poiuyt`', 'straight_spatial'],        // Straight row of keys
+            ['98761234', 'sequence'],               // Sequence of characters
+            ['30/09/1983', 'dates'],                // Date
+            ['StephenBall', 'names'],               // Name
+            ['aaaaaaaaa', 'repeat'],                // Repeating characters
+            ['password', 'top_10'],                 // Top 10 password
+            ['trustno1', 'top_100'],                // Top 100 password
+            ['drowssap', 'very_common'],            // Simple reversal of one of the top passwords
+            ['P4$$w0rd', 'predictable'],            // Predictable "l33t" substitutions
+            ['seriously', 'common'],                // Dictionary word
+            [date('Y'), 'years']                    // Recent year
+            // ['crkuw297', 'digits'],
         ];
     }
 }
