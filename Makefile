@@ -33,20 +33,10 @@ phpmd:
 	@echo "${GREEN}PHP Mess Detector${RESET}"
 	@php vendor/bin/phpmd src/ text cleancode,codesize,naming,design,controversial,unusedcode
 
-## Run Behat
-#behat:
-#	@echo "${GREEN}Behat${RESET}"
-#	@php vendor/bin/behat --format progress
-
 ## Run PHP code sniffer
 phpcs:
 	@echo "${GREEN}PHP Code Sniffer${RESET}"
 	@php vendor/bin/phpcs -p --standard=psr2 --colors src/
-
-## Run PHPStan
-#phpstan:
-#	@echo "${GREEN}PHPStan${RESET}"
-#	@php vendor/bin/phpstan analyse -l 0 src/
 
 ## PHP Parallel Lint
 lint:

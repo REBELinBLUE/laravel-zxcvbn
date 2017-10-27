@@ -3,6 +3,7 @@
 namespace REBELinBLUE\Zxcvbn;
 
 use Illuminate\Translation\Translator;
+use Illuminate\Validation\Validator;
 use InvalidArgumentException;
 use ZxcvbnPhp\Zxcvbn;
 
@@ -29,18 +30,17 @@ class ZxcvbnValidator
 
     public function validate(...$args)
     {
+        /** @var string $value */
         $value = trim($args[1]);
+
+        /** @var array $parameters */
         $parameters = $args[2] ? $args[2] : [];
 
         /** @var \Illuminate\Validation\Validator $validator */
         $validator = $args[3];
-        $otherInput = []; // FIXME: Get this
 
-        $desiredScore = isset($parameters[0]) ? $parameters[0] : self::DEFAULT_MINIMUM_STRENGTH;
-
-        if ($desiredScore < 0 || $desiredScore > 4 || !is_numeric($desiredScore)) {
-            throw new InvalidArgumentException('The required password score must be between 0 and 4');
-        }
+        $desiredScore = $this->getDesiredScore($parameters);
+        $otherInput = $this->getAdditionalInput($validator, $parameters);
 
         $zxcvbn = new Zxcvbn();
         $strength = $zxcvbn->passwordStrength($value, $otherInput);
@@ -60,6 +60,31 @@ class ZxcvbnValidator
         return false;
     }
 
+    private function getDesiredScore(array $parameters = [])
+    {
+        $desiredScore = isset($parameters[0]) ? $parameters[0] : self::DEFAULT_MINIMUM_STRENGTH;
+
+        if ($desiredScore < 0 || $desiredScore > 4 || !ctype_digit($desiredScore)) {
+            throw new InvalidArgumentException('The required password score must be between 0 and 4');
+        }
+
+        return $desiredScore;
+    }
+
+    private function getAdditionalInput(Validator $validator, array $parameters = [])
+    {
+        $input = $validator->getData();
+
+        $otherInput = [];
+        foreach (array_slice($parameters, 1) as $attribute) {
+            if (isset($input[$attribute])) {
+                $otherInput[] = $input[$attribute];
+            }
+        }
+
+        return $otherInput;
+    }
+
     private function getFeedbackTranslation()
     {
         $isOnlyMatch = count($this->result['match_sequence']) === 1;
@@ -68,9 +93,7 @@ class ZxcvbnValidator
         $longestMatch->token = '';
 
         foreach ($this->result['match_sequence'] as $match) {
-            if (strlen($match->token) > strlen($longestMatch->token) &&
-                preg_match('/Match$/', get_class($match)) // FIXME: HORRIBLE, BECAUSE OF THE BRUTE FORCE MATCHER
-            ) {
+            if (strlen($match->token) > strlen($longestMatch->token)) {
                 $longestMatch = $match;
             }
         }
@@ -80,25 +103,29 @@ class ZxcvbnValidator
 
     private function getMatchFeedback($match, $isOnlyMatch)
     {
-        $strategy = 'get' . ucfirst($match->pattern) . 'Warning';
+        $pattern = strtolower($match->pattern);
+        $strategy = 'get' . ucfirst($pattern) . 'Warning';
 
         if (method_exists($this, $strategy)) {
             return $this->$strategy($match, $isOnlyMatch);
         }
 
-        // FIXME: This should not happen
-        return $strategy;
+        // ['digits', 'year', 'date', 'repeat', 'sequence']
+        return strtolower($pattern);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+     */
     private function getDictionaryWarning($match, $isOnlyMatch)
     {
-        $warning = ''; // FIXME: Should it be possible for this to happen?
-        if ($match->dictionaryName == 'passwords') {
+        $warning = 'common'; // $match->dictionaryName == 'english'
+        if ($match->dictionaryName === 'passwords') {
             $warning = $this->getPasswordWarning($match, $isOnlyMatch);
-        } elseif ($match->dictionaryName == 'english') {
-            $warning = 'common';
         } elseif (in_array($match->dictionaryName, ['surnames', 'male_names', 'female_names'])) {
             $warning = 'names';
+        } elseif ($match->dictionaryName === 'user_inputs') {
+            $warning = 'reused'; // FIXME: Think of a way to detail which field is reused
         }
 
         if (isset($match->l33t)) {
@@ -124,38 +151,15 @@ class ZxcvbnValidator
         return $warning;
     }
 
-    private function getSequenceWarning()
-    {
-        return 'sequence';
-    }
-
+    /**
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+     */
     private function getSpatialWarning($match)
     {
-        $translation = 'spatial_with_turns';
         if ($match->turns === 1) {
-            $translation = 'straight_spatial';
+            return 'straight_spatial';
         }
 
-        return $translation;
-    }
-
-    private function getRepeatWarning()
-    {
-        return 'repeat';
-    }
-
-    private function getDateWarning()
-    {
-        return 'dates';
-    }
-
-    private function getYearWarning()
-    {
-        return 'years';
-    }
-
-    private function getDigitWarning()
-    {
-        return 'digits';
+        return 'spatial_with_turns';
     }
 }

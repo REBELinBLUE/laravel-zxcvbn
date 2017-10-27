@@ -70,11 +70,7 @@ class ZxcvbnTest extends TestCase
 
     public function scoreDataProvider()
     {
-        return [
-            [-1],
-            [5],
-            ['invalid-score'],
-        ];
+        return array_chunk(['-1', -10, 5, 3.4, '2.1', 'invalid-score', 0x1A, 0b111111], 1);
     }
 
     public function testItFailsOnGuessablePassword()
@@ -100,7 +96,7 @@ class ZxcvbnTest extends TestCase
     }
 
     /**
-     * @dataProvider validationDataProvider
+     * @dataProvider invalidPasswordDataProvider
      */
     public function testItSetsTheCorrectErrorOnFailure($value, $expected)
     {
@@ -120,23 +116,46 @@ class ZxcvbnTest extends TestCase
         );
     }
 
-    public function validationDataProvider()
+    public function invalidPasswordDataProvider()
     {
         return [
-            ['test123456', 'common'],               // Common
-            ['poiuytghjkl', 'spatial_with_turns'],  // Simple keyboard pattern
-            ['poiuyt`', 'straight_spatial'],        // Straight row of keys
-            ['98761234', 'sequence'],               // Sequence of characters
-            ['30/09/1983', 'dates'],                // Date
-            ['StephenBall', 'names'],               // Name
-            ['aaaaaaaaa', 'repeat'],                // Repeating characters
-            ['password', 'top_10'],                 // Top 10 password
-            ['trustno1', 'top_100'],                // Top 100 password
-            ['drowssap', 'very_common'],            // Simple reversal of one of the top passwords
-            ['P4$$w0rd', 'predictable'],            // Predictable "l33t" substitutions
-            ['seriously', 'common'],                // Dictionary word
-            [date('Y'), 'years']                    // Recent year
-            // ['crkuw297', 'digits'],
+            ['test123456', 'common'],              // Common
+            ['poiuytghjkl', 'spatial_with_turns'], // Simple keyboard pattern
+            ['poiuyt`', 'straight_spatial'],       // Straight row of keys
+            ['98761234', 'sequence'],              // Sequence of characters
+            ['30/09/1983', 'date'],                // Date
+            ['StephenBall', 'names'],              // Name
+            ['aaaaaaaaa', 'repeat'],               // Repeating characters
+            ['password', 'top_10'],                // Top 10 password
+            ['trustno1', 'top_100'],               // Top 100 password
+            ['drowssap', 'very_common'],           // Simple reversal of one of the top passwords
+            ['P4$$w0rd', 'predictable'],           // Predictable "l33t" substitutions
+            ['seriously', 'common'],               // Dictionary word
+            [date('Y'), 'year']                    // Recent year
         ];
+    }
+
+    public function testItAddsOtherInputToTheDictionary()
+    {
+        $data = [
+            'password' => 'rebelinblue',
+            'username' => 'REBELinBLUE',
+            'email'    => 'user@example.com',
+            'gender'   => 'male'
+        ];
+
+        $validator = $this->factory->make($data, [
+            'password' => 'zxcvbn:4,username,email,name',
+        ]);
+
+        $this->assertFalse($validator->passes());
+
+
+        $translator = $this->app->make('translator');
+
+        $this->assertSame(
+            $translator->get('zxcvbn::validation.reused'),
+            $validator->errors()->first()
+        );
     }
 }
