@@ -52,7 +52,6 @@ class ZxcvbnValidator
             return true;
         }
 
-        // FIXME: Is this the best way to do it?
         $validator->setCustomMessages([
             'zxcvbn' => $this->translator->get('zxcvbn::validation.' . $this->getFeedbackTranslation())
         ]);
@@ -125,7 +124,7 @@ class ZxcvbnValidator
         } elseif (in_array($match->dictionaryName, ['surnames', 'male_names', 'female_names'])) {
             $warning = 'names';
         } elseif ($match->dictionaryName === 'user_inputs') {
-            $warning = 'reused'; // FIXME: Think of a way to detail which field is reused
+            $warning = 'reused';
         }
 
         if (isset($match->l33t)) {

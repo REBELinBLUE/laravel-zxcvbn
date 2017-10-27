@@ -32,10 +32,6 @@ class ZxcvbnServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('zxcvbn', function () {
-            return new Zxcvbn();
-        });
-
         $this->app->alias(Zxcvbn::class, 'zxcvbn');
     }
 }
