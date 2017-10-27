@@ -33,3 +33,65 @@ Optionally, you can publish the translations for this package with, however it i
 ``` bash
 php artisan vendor:publish --provider="REBELinBLUE\Zxcvbn\ZxcvbnServiceProvider"
 ```
+
+## Usage
+
+If you have added the alias you can access Zxcvbn from anyone in your code using the façade
+
+```php
+<?php
+
+use Zxcvbn;
+
+class MyCustomClass
+{
+    public function someMethod()
+    {
+        $strength = Zxcvbn::passwordStrength('Pa$$w0rd');
+        dd($strength);
+    }    
+}
+
+```
+
+However, you probably want to use it as a validator. The package add a single rule "zxcvbn"
+
+### Example
+```php
+<?php
+
+use Illuminate\Foundation\Http\Request;
+
+class SavePasswordRequest extends Request
+{
+    public function rules()
+    {
+        return [
+            'password' => 'required|min:6|zxcvbn',
+        ];
+    }
+}
+
+
+// alternatively
+
+$input = [ /* user input */ ];
+$validator = Validator::make($input, [
+    'password' => 'required|min:6|zxcvbn',
+]); 
+```
+
+There are 2 optional parameters, the required score from 0 to 4 and a comma separate list of other fields to compare
+against, for example to ensure a strong password which doesn't contain the username or email you would use
+
+```php
+'password' => 'required|min:6|zxcvbn:4,username,email',
+```
+
+The scores are rated as follows:
+
+* 0 - Too guessable: risky password. (guesses < 10^3)
+* 1 - Very guessable: protection from throttled online attacks. (guesses < 10^6)
+* 2 - Somewhat guessable: protection from unthrottled online attacks. (guesses < 10^8)
+* 3 - Safely unguessable: moderate protection from offline slow-hash scenario. (guesses < 10^10)
+* 4 - Very unguessable: strong protection from offline slow-hash scenario. (guesses >= 10^10)
