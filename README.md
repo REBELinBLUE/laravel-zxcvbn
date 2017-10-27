@@ -60,21 +60,6 @@ However, you probably want to use it as a validator. The package add a single ru
 ```php
 <?php
 
-use Illuminate\Foundation\Http\Request;
-
-class SavePasswordRequest extends Request
-{
-    public function rules()
-    {
-        return [
-            'password' => 'required|min:6|zxcvbn',
-        ];
-    }
-}
-
-
-// alternatively
-
 $input = [ /* user input */ ];
 $validator = Validator::make($input, [
     'password' => 'required|min:6|zxcvbn',
