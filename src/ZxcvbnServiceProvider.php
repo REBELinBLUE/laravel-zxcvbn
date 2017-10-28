@@ -7,6 +7,9 @@ use ZxcvbnPhp\Zxcvbn;
 
 class ZxcvbnServiceProvider extends ServiceProvider
 {
+
+    const TRANSLATIONS_PATH = __DIR__ . '/../resources/lang';
+
     /**
      * Bootstrap the application services.
      *
@@ -14,12 +17,10 @@ class ZxcvbnServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $translations = realpath(__DIR__ . '/../resources/lang');
-
-        $this->loadTranslationsFrom($translations, 'zxcvbn');
+        $this->loadTranslationsFrom(self::TRANSLATIONS_PATH, 'zxcvbn');
 
         $this->publishes([
-            $translations => resource_path('lang/vendor/zxcvbn'),
+            self::TRANSLATIONS_PATH => resource_path('lang/vendor/zxcvbn'),
         ]);
 
         $this->app->make('validator')->extend('zxcvbn', ZxcvbnValidator::class . '@validate');
