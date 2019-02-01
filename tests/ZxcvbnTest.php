@@ -119,6 +119,7 @@ class ZxcvbnTest extends TestCase
     public function invalidPasswordDataProvider()
     {
         return [
+            ['halloduda', 'bruteforce'],
             ['test123456', 'common'],              // Common
             ['poiuytghjkl', 'spatial_with_turns'], // Simple keyboard pattern
             ['poiuyt`', 'straight_spatial'],       // Straight row of keys
