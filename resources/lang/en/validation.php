@@ -2,6 +2,7 @@
 
 return [
 
+    'bruteforce'         => 'This password is easy to brute-force. Use different character classes (letters, numbers, special characters).',
     'predictable'        => 'Predictable substitutions such as "@" for "a" or "$" for "s" are easy to guess',
     'sequence'           => 'Sequences like "ABC" or "123" are easy to guess',
     'repeat'             => 'Repeating characters like "AAA" or "111" are easy to guess',
