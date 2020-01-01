@@ -119,7 +119,7 @@ class ZxcvbnTest extends TestCase
     public function invalidPasswordDataProvider()
     {
         return [
-            ['halloduda', 'bruteforce'],
+            ['halloduda', 'bruteforce'],           // Bruteforce
             ['test123456', 'common'],              // Common
             ['poiuytghjkl', 'spatial_with_turns'], // Simple keyboard pattern
             ['poiuyt`', 'straight_spatial'],       // Straight row of keys
@@ -132,7 +132,7 @@ class ZxcvbnTest extends TestCase
             ['drowssap', 'very_common'],           // Simple reversal of one of the top passwords
             ['P4$$w0rd', 'predictable'],           // Predictable "l33t" substitutions
             ['seriously', 'common'],               // Dictionary word
-            [date('Y'), 'year']                    // Recent year
+            [2019, 'year']                         // Recent year
         ];
     }
 
