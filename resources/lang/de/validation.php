@@ -9,7 +9,7 @@ return [
     'date'               => 'Datumsangaben sind oft leicht zu erraten.',
     'year'               => 'Die letzten Jahre sind leicht zu erraten.',
     'straight_spatial'   => 'Kurze Tastaturmuster sind leicht zu erraten.',
-    'spatial_with_turns' => 'Gerade Tataturreihen lassen sich leicht erraten.',
+    'spatial_with_turns' => 'Gerade Tastaturreihen lassen sich leicht erraten.',
     'names'              => 'Namen sind leicht zu erraten.',
     'common'             => 'Das Passwort ist einem häufig verwendeten Passwort ähnlich.',
     'very_common'        => 'Dieses Passwort wird häufig verwendet.',
