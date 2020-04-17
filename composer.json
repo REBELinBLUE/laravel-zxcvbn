@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": ">=5.6",
-        "illuminate/support": "^5.4||^6.0",
+        "illuminate/support": "^5.4||^6.0||^7.0||^8.0",
         "bjeavons/zxcvbn-php": "^0.3"
     },
     "require-dev": {
