@@ -7,7 +7,6 @@ use ZxcvbnPhp\Zxcvbn;
 
 class ZxcvbnServiceProvider extends ServiceProvider
 {
-
     const TRANSLATIONS_PATH = __DIR__ . '/../resources/lang';
 
     /**
