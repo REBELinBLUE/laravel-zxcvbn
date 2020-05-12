@@ -20,7 +20,7 @@ install: composer
 ifndef COMPOSER
 	@php composer.phar install --optimize-autoloader --prefer-dist --no-interaction --no-suggest
 else
-	@composer  install --optimize-autoloader --prefer-dist --no-interaction --no-suggest
+	@composer install --optimize-autoloader --prefer-dist --no-interaction --no-suggest
 endif
 
 ## Run PHP unit tests

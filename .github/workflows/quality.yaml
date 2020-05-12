@@ -1,0 +1,40 @@
+name: Quality Checks
+
+on: [push, pull_request]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.1.4
+        with:
+          php-version: 7.1
+
+      - name: Lint composer.json
+        run: composer validate
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Dependency Cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-7.1
+
+      - name: Install Dependencies
+        run: composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs
+
+      - name: Lint
+        run: php vendor/bin/parallel-lint src/ tests/
+
+      - name: Check Code Styles
+        run: php vendor/bin/phpcs -p --standard=psr2 --colors src/
