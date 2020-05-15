@@ -1,0 +1,73 @@
+# These settings are synced to GitHub by https://probot.github.io/apps/settings/
+
+repository:
+  name: laravel5-zxcvbn
+  description: A Laravel validator using Dropbox's zxcvbn password strength estimator
+  topics: zxcvbn, laravel-validator, password-strength, laravel, dropbox
+
+  private: false
+  archived: false
+
+  has_issues: true
+  has_projects: false
+  has_wiki: false
+  has_downloads: true
+
+  default_branch: master
+  delete_branch_on_merge: true
+
+  allow_squash_merge: true
+  allow_merge_commit: true
+  allow_rebase_merge: true
+
+labels:
+  - name: bug
+    color: '#CC0000'
+    description: An issue with the code
+
+  - name: feature
+    color: '#336699'
+    description: New functionality
+
+  - name: chore
+    color: '#f2df8c'
+    description: Repository or code maintenance
+
+  - name: documentation
+    color: '#6cb524'
+    description: Change in the documentation
+
+  - name: dependencies
+    color: '#70f9e0'
+    description: Update dependencies
+
+branches:
+  - name: master
+    protection:
+      required_linear_history: true
+      required_signatures: false
+      allow_force_pushes: false
+      allow_deletions: false
+
+      required_pull_request_reviews:
+        required_approving_review_count: 1
+        dismiss_stale_reviews: true
+        require_code_owner_reviews: true
+
+      required_status_checks:
+        strict: true
+        contexts:
+          - codecov/patch
+          - codecov/project
+          - continuous-integration/styleci/push
+          - quality
+          - tests (5.6)
+          - tests (7.0)
+          - tests (7.1)
+          - tests (7.2)
+          - tests (7.3)
+          - coverage (7.4)
+
+      enforce_admins: true
+
+      restrictions: ~
