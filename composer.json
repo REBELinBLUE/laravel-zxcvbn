@@ -1,5 +1,5 @@
 {
-    "name": "rebelinblue/laravel5-zxcvbn",
+    "name": "rebelinblue/laravel-zxcvbn",
     "description": "Service provider to use the zxcvbn project by @dropbox in Laravel 5.",
     "keywords": [
         "zxcvbn",
@@ -8,7 +8,7 @@
         "validation",
         "laravel"
     ],
-    "homepage": "https://github.com/REBELinBLUE/laravel5-zxcvbn",
+    "homepage": "https://github.com/REBELinBLUE/laravel-zxcvbn",
     "type": "library",
     "license": "MIT",
     "authors": [

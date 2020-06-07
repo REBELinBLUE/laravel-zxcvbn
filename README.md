@@ -1,7 +1,7 @@
 # Laravel Zxcvbn validator
 
-[![Build Status](https://img.shields.io/github/workflow/status/REBELinBLUE/laravel5-zxcvbn/Tests?label=Build&style=flat-square)](https://github.com/REBELinBLUE/laravel5-zxcvbn/actions?query=workflow%3ATests)
-[![Code Coverage](https://img.shields.io/codecov/c/github/REBELinBLUE/laravel5-zxcvbn/master.svg?style=flat-square&label=Coverage)](https://codecov.io/gh/REBELinBLUE/laravel5-zxcvbn)
+[![Build Status](https://img.shields.io/github/workflow/status/REBELinBLUE/laravel-zxcvbn/Tests?label=Build&style=flat-square)](https://github.com/REBELinBLUE/laravel-zxcvbn/actions?query=workflow%3ATests)
+[![Code Coverage](https://img.shields.io/codecov/c/github/REBELinBLUE/laravel-zxcvbn/master.svg?style=flat-square&label=Coverage)](https://codecov.io/gh/REBELinBLUE/laravel-zxcvbn)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square&label=License)](/LICENSE.md)
 
 This package provides a validator which uses Dropbox's [zxcvbn](https://github.com/dropbox/zxcvbn) 
@@ -13,7 +13,7 @@ password strength estimator; it uses the [PHP implementation](https://github.com
 This package can be installed through Composer.
 
 ``` bash
-composer require rebelinblue/laravel5-zxcvbn
+composer require rebelinblue/laravel-zxcvbn
 ```
 
 In Laravel 5.5 the package will auto-register the service provider. In Laravel 5.4 you must register this 

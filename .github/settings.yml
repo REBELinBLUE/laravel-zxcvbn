@@ -1,7 +1,7 @@
 # These settings are synced to GitHub by https://probot.github.io/apps/settings/
 
 repository:
-  name: laravel5-zxcvbn
+  name: laravel-zxcvbn
   description: A Laravel validator using Dropbox's zxcvbn password strength estimator
   topics: zxcvbn, laravel-validator, password-strength, laravel, dropbox
 
@@ -68,6 +68,6 @@ branches:
           - tests (7.3)
           - coverage (7.4)
 
-      enforce_admins: true
+      enforce_admins: false
 
       restrictions: ~
