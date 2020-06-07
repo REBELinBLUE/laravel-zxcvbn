@@ -1,6 +1,6 @@
 {
     "name": "rebelinblue/laravel-zxcvbn",
-    "description": "Service provider to use the zxcvbn project by @dropbox in Laravel 5.",
+    "description": "Service provider to use the zxcvbn project by @dropbox in Laravel 5.4 and above",
     "keywords": [
         "zxcvbn",
         "passwords",
