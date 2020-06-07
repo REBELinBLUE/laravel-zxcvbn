@@ -35,9 +35,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-${{ matrix.php }}
 
       - name: Install Dependencies
-        run: |
-          composer config platform.php ${{ matrix.php }}
-          composer install --no-interaction --prefer-dist --no-suggest
+        run: composer install --no-interaction --prefer-dist --no-suggest
 
       - name: Run Unit Tests
         run: php vendor/bin/phpunit
@@ -74,7 +72,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-${{ matrix.php }}
 
       - name: Install Dependencies
-        run: composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs
+        run: composer install --no-interaction --prefer-dist --no-suggest
 
       - name: Run Unit Tests
         run: php vendor/bin/phpunit --coverage-clover=clover.xml
