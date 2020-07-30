@@ -36,7 +36,7 @@ php artisan vendor:publish --provider="REBELinBLUE\Zxcvbn\ZxcvbnServiceProvider"
 
 ## Usage
 
-If you have added the alias you can access Zxcvbn from anyone in your code using the façade
+If you have added the alias you can access Zxcvbn from anywhere in your code using the façade
 
 ```php
 <?php
