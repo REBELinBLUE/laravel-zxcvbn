@@ -98,13 +98,6 @@ class ZxcvbnTest extends TestCase
 
         $this->assertFalse($validator->passes());
 
-        if ($validator->errors()->first() !== $translator->get('zxcvbn::validation.' . $expected)) {
-            ray("Value given", $value)->red();
-            ray("Validation Returned", $validator->errors()->first());
-            ray('Expected', $translator->get('zxcvbn::validation.' . $expected));
-            ray()->pause();
-        }
-
         $this->assertSame(
             $translator->get('zxcvbn::validation.' . $expected),
             $validator->errors()->first()
