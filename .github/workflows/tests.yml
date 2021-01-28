@@ -76,9 +76,3 @@ jobs:
 
       - name: Run Unit Tests
         run: php vendor/bin/phpunit --coverage-clover=clover.xml
-
-      - name: Upload Coverage Report
-        uses: codecov/codecov-action@v1
-        with:
-          file: ./clover.xml
-          fail_ci_if_error: true
