@@ -17,5 +17,4 @@ return [
     'top_100'            => 'Das Passwort ist in den Top 100 der häufigsten Passwörter.',
     'digits'             => 'Durch das Hinzufügen einer Reihe von Ziffern wird die Sicherheit nicht verbessert.',
     'reused'             => 'Die Wiederverwendung von Informationen wie Name, Benutzername oder E-Mail-Adresse im Kennwort ist nicht sicher.',
-
 ];

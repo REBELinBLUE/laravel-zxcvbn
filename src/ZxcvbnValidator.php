@@ -5,6 +5,8 @@ namespace REBELinBLUE\Zxcvbn;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Validator;
 use InvalidArgumentException;
+use stdClass;
+use ZxcvbnPhp\Matchers\BaseMatch;
 use ZxcvbnPhp\Zxcvbn;
 
 /**
@@ -28,15 +30,14 @@ class ZxcvbnValidator
         $this->translator = $translator;
     }
 
-    public function validate(...$args)
+    public function validate(...$args): bool
     {
-        /** @var string $value */
         $value = trim($args[1]);
 
         /** @var array $parameters */
         $parameters = $args[2] ? $args[2] : [];
 
-        /** @var \Illuminate\Validation\Validator $validator */
+        /** @var Validator $validator */
         $validator = $args[3];
 
         $desiredScore = $this->getDesiredScore($parameters);
@@ -59,7 +60,7 @@ class ZxcvbnValidator
         return false;
     }
 
-    private function getDesiredScore(array $parameters = [])
+    private function getDesiredScore(array $parameters = []): int
     {
         $desiredScore = isset($parameters[0]) ? $parameters[0] : self::DEFAULT_MINIMUM_STRENGTH;
 
@@ -70,7 +71,7 @@ class ZxcvbnValidator
         return $desiredScore;
     }
 
-    private function getAdditionalInput(Validator $validator, array $parameters = [])
+    private function getAdditionalInput(Validator $validator, array $parameters = []): array
     {
         $input      = $validator->getData();
         $otherInput = [];
@@ -87,7 +88,7 @@ class ZxcvbnValidator
     {
         $isOnlyMatch = count($this->result['sequence']) === 1;
 
-        $longestMatch        = new \stdClass();
+        $longestMatch        = new stdClass();
         $longestMatch->token = '';
 
         foreach ($this->result['sequence'] as $match) {
@@ -99,7 +100,7 @@ class ZxcvbnValidator
         return $this->getMatchFeedback($longestMatch, $isOnlyMatch);
     }
 
-    private function getMatchFeedback($match, $isOnlyMatch)
+    private function getMatchFeedback(BaseMatch $match, $isOnlyMatch)
     {
         $pattern  = mb_strtolower($match->pattern);
         $strategy = 'get' . ucfirst($pattern) . 'Warning';
@@ -113,31 +114,28 @@ class ZxcvbnValidator
 
     /**
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
-     * @param $match
-     * @param $isOnlyMatch
-     * @return string
      */
-    private function getDictionaryWarning($match, $isOnlyMatch)
+    private function getDictionaryWarning(BaseMatch $match, bool $isOnlyMatch): string
     {
-        $warning = 'common'; // $match->dictionaryName == 'english'
         if ($match->dictionaryName === 'passwords') {
-            $warning = $this->getPasswordWarning($match, $isOnlyMatch);
-        } elseif (in_array($match->dictionaryName, ['surnames', 'male_names', 'female_names'], true)) {
-            $warning = 'names';
-        } elseif ($match->dictionaryName === 'user_inputs') {
-            $warning = 'reused';
+            return $this->getPasswordWarning($match, $isOnlyMatch);
         }
 
-        return $warning;
+        if (in_array($match->dictionaryName, ['surnames', 'male_names', 'female_names'], true)) {
+            return 'names';
+        }
+
+        if ($match->dictionaryName === 'user_inputs') {
+            return 'reused';
+        }
+
+        return 'common';
     }
 
     /**
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
-     * @noinspection PhpMissingReturnTypeInspection
-     * @param  $match
-     * @return string
      */
-    private function getRegexWarning($match)
+    private function getRegexWarning(BaseMatch $match): string
     {
         $warning = 'year';
 
@@ -148,11 +146,12 @@ class ZxcvbnValidator
         return $warning;
     }
 
-    private function getPasswordWarning($match, $isOnlyMatch)
+    private function getPasswordWarning(BaseMatch $match, bool $isOnlyMatch): string
     {
         if (!$isOnlyMatch) {
             return 'suggestion';
         }
+
         if ($match->l33t) {
             return 'predictable';
         }
@@ -175,7 +174,7 @@ class ZxcvbnValidator
     /**
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function getSpatialWarning($match)
+    private function getSpatialWarning(BaseMatch $match): string
     {
         if ($match->turns === 1) {
             return 'straight_spatial';
