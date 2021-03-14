@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+    'suggestion'         => 'Add another word or two. Uncommon words are better',
     'bruteforce'         => 'This password is easy to brute-force. Use different character classes (letters, numbers, special characters).',
     'predictable'        => 'Predictable substitutions such as "@" for "a" or "$" for "s" are easy to guess',
     'sequence'           => 'Sequences like "ABC" or "123" are easy to guess',
@@ -17,5 +17,4 @@ return [
     'top_100'            => 'This is in the top-100 most common passwords',
     'digits'             => 'Adding a series of digits does not improve security',
     'reused'             => 'Re-using information such as your name, username or email in the password is not secure',
-
 ];

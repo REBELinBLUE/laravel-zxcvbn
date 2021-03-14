@@ -14,30 +14,16 @@ class ZxcvbnTest extends TestCase
     /** @var Factory */
     private $factory;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->factory = $this->app->make('validator');
     }
 
-    protected function getPackageProviders($app)
-    {
-        return [
-            ZxcvbnServiceProvider::class,
-        ];
-    }
-
-    protected function getPackageAliases($app)
-    {
-        return [
-            'Zxcvbn' => Zxcvbn::class
-        ];
-    }
-
     public function testBinding()
     {
-        $byName = $this->app->make('zxcvbn');
+        $byName  = $this->app->make('zxcvbn');
         $byClass = $this->app->make(ZxcvbnPhp::class);
 
         $this->assertInstanceOf(ZxcvbnPhp::class, $byName);
@@ -49,7 +35,7 @@ class ZxcvbnTest extends TestCase
         $result = Zxcvbn::passwordStrength('testing');
 
         $this->assertArrayHasKey('score', $result);
-        $this->assertArrayHasKey('match_sequence', $result);
+        $this->assertArrayHasKey('sequence', $result);
     }
 
     /**
@@ -97,6 +83,8 @@ class ZxcvbnTest extends TestCase
 
     /**
      * @dataProvider invalidPasswordDataProvider
+     * @param $value
+     * @param $expected
      */
     public function testItSetsTheCorrectErrorOnFailure($value, $expected)
     {
@@ -119,10 +107,10 @@ class ZxcvbnTest extends TestCase
     public function invalidPasswordDataProvider()
     {
         return [
-            ['halloduda', 'bruteforce'],           // Bruteforce
-            ['test123456', 'common'],              // Common
+            ['halloduda', 'suggestion'],           // suggestion
+            ['com', 'bruteforce'],                 // Bruteforce
             ['poiuytghjkl', 'spatial_with_turns'], // Simple keyboard pattern
-            ['poiuyt`', 'straight_spatial'],       // Straight row of keys
+            ['zxcvbnm,./`', 'straight_spatial'],   // Straight row of keys
             ['98761234', 'sequence'],              // Sequence of characters
             ['30/09/1983', 'date'],                // Date
             ['StephenBall', 'names'],              // Name
@@ -132,7 +120,7 @@ class ZxcvbnTest extends TestCase
             ['drowssap', 'very_common'],           // Simple reversal of one of the top passwords
             ['P4$$w0rd', 'predictable'],           // Predictable "l33t" substitutions
             ['seriously', 'common'],               // Dictionary word
-            [2019, 'year']                         // Recent year
+            [2019, 'year'],                        // Recent year
         ];
     }
 
@@ -142,7 +130,7 @@ class ZxcvbnTest extends TestCase
             'password' => 'rebelinblue',
             'username' => 'REBELinBLUE',
             'email'    => 'user@example.com',
-            'gender'   => 'male'
+            'gender'   => 'male',
         ];
 
         $validator = $this->factory->make($data, [
@@ -151,12 +139,25 @@ class ZxcvbnTest extends TestCase
 
         $this->assertFalse($validator->passes());
 
-
         $translator = $this->app->make('translator');
 
         $this->assertSame(
             $translator->get('zxcvbn::validation.reused'),
             $validator->errors()->first()
         );
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return [
+            ZxcvbnServiceProvider::class,
+        ];
+    }
+
+    protected function getPackageAliases($app)
+    {
+        return [
+            'Zxcvbn' => Zxcvbn::class,
+        ];
     }
 }

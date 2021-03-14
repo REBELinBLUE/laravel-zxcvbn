@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+    'suggestion'         => 'Fügen Sie ein oder zwei weitere Wörter hinzu. Gelegentliche Wörter sind besser',
     'bruteforce'         => 'Das Passwort ist durch Probieren leicht zu erraten. Verwenden Sie Zeichenklassen (Buchstaben, Zahlen, Sonderzeichen).',
     'predictable'        => 'Vorhersagbare Ersetzungen wie "@" für "a" oder "$" für "s" sind leicht zu erraten.',
     'sequence'           => 'Sequenzen wie "ABC" oder "123" sind leicht zu erraten.',
