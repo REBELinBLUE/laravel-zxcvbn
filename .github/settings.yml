@@ -65,7 +65,7 @@ branches:
           - tests (8.2)
           - coverage (8.1)
           - continuous-integration/styleci/pr
-          - continuous-integration/styleci/push
+          #- continuous-integration/styleci/push
 
       enforce_admins: false
 
