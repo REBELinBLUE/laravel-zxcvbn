@@ -11,9 +11,9 @@ jobs:
         uses: actions/checkout@master
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.1.4
+        uses: shivammathur/setup-php@2.24.0
         with:
-          php-version: 8.0
+          php-version: 8.1
 
       - name: Lint composer.json
         run: composer validate
@@ -28,7 +28,7 @@ jobs:
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-7.1
+          restore-keys: ${{ runner.os }}-composer-8.1
 
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --no-suggest --ignore-platform-reqs
