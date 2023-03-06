@@ -9,3 +9,4 @@ build/
 .php_cs
 coverage.xml
 phpunit.xml
+.phpunit.result.cache

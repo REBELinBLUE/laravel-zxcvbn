@@ -13,7 +13,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@2.1.4
         with:
-          php-version: 7.1
+          php-version: 8.0
 
       - name: Lint composer.json
         run: composer validate

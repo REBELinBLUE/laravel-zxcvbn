@@ -18,9 +18,9 @@ endif
 ## Install dependencies
 install: composer
 ifndef COMPOSER
-	@php composer.phar install --optimize-autoloader --prefer-dist --no-interaction --no-suggest
+	@php composer.phar install --optimize-autoloader --prefer-dist --no-interaction
 else
-	@composer install --optimize-autoloader --prefer-dist --no-interaction --no-suggest
+	@composer install --optimize-autoloader --prefer-dist --no-interaction
 endif
 
 ## Run PHP unit tests
