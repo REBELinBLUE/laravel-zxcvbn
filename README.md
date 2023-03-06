@@ -1,6 +1,6 @@
 # Laravel Zxcvbn validator
 
-[![Build Status](https://img.shields.io/github/workflow/status/REBELinBLUE/laravel-zxcvbn/Tests?label=Build&style=flat-square)](https://github.com/REBELinBLUE/laravel-zxcvbn/actions?query=workflow%3ATests)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/REBELinBLUE/laravel-zxcvbn/tests.yml?branch=master?label=Build&style=flat-square)](https://github.com/REBELinBLUE/laravel-zxcvbn/actions?query=workflow%3ATests)
 [![Code Coverage](https://img.shields.io/codecov/c/github/REBELinBLUE/laravel-zxcvbn/master.svg?style=flat-square&label=Coverage)](https://codecov.io/gh/REBELinBLUE/laravel-zxcvbn)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square&label=License)](/LICENSE.md)
 

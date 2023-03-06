@@ -57,16 +57,15 @@ branches:
       required_status_checks:
         strict: true
         contexts:
-          - codecov/patch
-          - codecov/project
-          - continuous-integration/styleci/push
+          #- codecov/patch
+          #- codecov/project
           - quality
-          - tests (5.6)
-          - tests (7.0)
-          - tests (7.1)
-          - tests (7.2)
-          - tests (7.3)
-          - coverage (7.4)
+          - tests (8.0)
+          - tests (8.1)
+          - tests (8.2)
+          - coverage (8.1)
+          - continuous-integration/styleci/pr
+          #- continuous-integration/styleci/push
 
       enforce_admins: false
 
